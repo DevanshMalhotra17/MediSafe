@@ -1,16 +1,16 @@
-import { callAPI } from './lib/ai';
+import { useState } from 'react';
+import Sidebar from './components/ui/Sidebar';
+import { COLORS, FONTS } from './lib/constants';
 
 export default function App() {
-  async function test() {
-    const res = await callAPI('You are helpful.', 'Say hello in 5 words.');
-    console.log('AI says:', res);
-  }
+  const [active, setActive] = useState('lab');
+
   return (
-      <div style={{ padding: 40, background: '#0F1117', minHeight: '100vh' }}>
-        <h1 style={{ color: 'white' }}>MediSafe</h1>
-        <button onClick={test} style={{ color: 'white', background: '#4ADE80', padding: '10px 20px', border: 'none', borderRadius: 8, cursor: 'pointer' }}>
-          Test AI
-        </button>
-      </div>
+    <div style={{ display: 'flex', minHeight: '100vh', background: COLORS.bg, fontFamily: FONTS.body }}>
+      <Sidebar active={active} onSelect={setActive} lastUpdated={null} />
+      <main style={{ flex: 1, padding: '32px 36px', color: COLORS.text }}>
+        <p>Active tab: {active}</p>
+      </main>
+    </div>
   );
 }

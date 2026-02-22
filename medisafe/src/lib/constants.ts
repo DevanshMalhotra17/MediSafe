@@ -14,13 +14,18 @@ export const COLORS = {
   textDim: '#94A3B8',
 };
 
+export const FONTS = {
+  body: "'DM Sans', sans-serif",
+  mono: "'JetBrains Mono', monospace",
+};
+
 export const NAV_ITEMS = [
-  { id: 'lab', label: 'Lab Results',  pillar: 'bio' },
-  { id: 'privacy', label: 'Privacy', pillar: 'cyber' },
-  { id: 'meds', label: 'Medications', pillar: 'bio' },
-  { id: 'meal', label: 'Meal Analyzer', pillar: 'bio' },
-  { id: 'fitness', label: 'Fitness', pillar: 'bio' },
-  { id: 'chat', label: 'AI Assistant', pillar: 'ai' },
+  { id: 'lab', label: 'Lab Results', icon: '🩸', pillar: 'bio' },
+  { id: 'privacy', label: 'Privacy', icon: '🔐', pillar: 'cyber' },
+  { id: 'meds', label: 'Medications', icon: '💊', pillar: 'bio' },
+  { id: 'meal', label: 'Meal Analyzer', icon: '🍽️', pillar: 'bio' },
+  { id: 'fitness', label: 'Fitness', icon: '🏃', pillar: 'bio' },
+  { id: 'chat', label: 'AI Assistant', icon: '✦', pillar: 'ai' },
 ];
 
 export const SAMPLE_LAB = `Glucose: 118 mg/dL
