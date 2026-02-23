@@ -1,4 +1,4 @@
-import { COLORS, FONTS, NAV_ITEMS } from '../../lib/constants';
+import { COLORS, FONTS, NAV_ITEMS } from '../lib/constants';
 
 interface Props {
   active: string;

@@ -1,5 +1,5 @@
-import { COLORS, FONTS } from '../../lib/constants';
-import type { HealthProfile } from '../../lib/types';
+import { COLORS, FONTS } from '../lib/constants';
+import type { HealthProfile } from '../lib/types';
 
 interface Props {
   profile: HealthProfile;
