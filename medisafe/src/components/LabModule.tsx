@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { COLORS, FONTS, SAMPLE_LAB } from '../lib/constants';
 import { callAPI, parseJSON } from '../lib/ai';
-import type { HealthProfile, LabAnalysis } from '../lib/types';
+import type { HealthProfile, LabAnalysis, LabValue } from '../lib/types';
 
 const SYSTEM = `You are a medical data interpreter. The user will paste raw lab results.
-Return ONLY valid JSON in this exact shape, no markdown, no extra text:
+Return ONLY valid JSON in this exact shape. No markdown, no extra text:
 {
   "summary": "2-3 sentence plain-English overview of the person's overall health",
   "values": [
@@ -21,6 +21,65 @@ Return ONLY valid JSON in this exact shape, no markdown, no extra text:
   "lifestyleTips": ["Tip 1", "Tip 2", "Tip 3"]
 }`;
 
+const STATUS_COLOR: Record<string, string> = {
+  normal:   COLORS.safe,
+  low:      COLORS.warn,
+  high:     COLORS.warn,
+  critical: COLORS.danger,
+};
+
+const STATUS_BG: Record<string, string> = {
+  normal:   '#4ADE8018',
+  low:      '#FBBF2418',
+  high:     '#FBBF2418',
+  critical: '#F8717118',
+};
+
+function ValueCard({ v }: { v: LabValue }) {
+  const color = STATUS_COLOR[v.status] ?? COLORS.textDim;
+  const bg    = STATUS_BG[v.status]    ?? 'transparent';
+
+  return (
+    <div style={{
+      background: COLORS.surface,
+      border: `1px solid ${COLORS.border}`,
+      borderRadius: 10,
+      padding: '14px 16px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 6,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: 13, fontWeight: 600, color: COLORS.text }}>{v.name}</span>
+        <span style={{
+          fontSize: 11,
+          fontWeight: 700,
+          color,
+          background: bg,
+          padding: '2px 8px',
+          borderRadius: 999,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+        }}>
+          {v.status}
+        </span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+        <span style={{ fontSize: 20, fontWeight: 700, color, fontFamily: FONTS.mono }}>
+          {v.value}
+        </span>
+        <span style={{ fontSize: 12, color: COLORS.textMuted }}>{v.unit}</span>
+        <span style={{ fontSize: 11, color: COLORS.textMuted, marginLeft: 'auto' }}>
+          ref: {v.range}
+        </span>
+      </div>
+      <p style={{ margin: 0, fontSize: 12, color: COLORS.textDim, lineHeight: 1.6 }}>
+        {v.explanation}
+      </p>
+    </div>
+  );
+}
+
 interface Props {
   profile: HealthProfile;
   onProfileUpdate: (p: Partial<HealthProfile>) => void;
@@ -30,6 +89,8 @@ export default function LabModule({ profile, onProfileUpdate }: Props) {
   const [text, setText] = useState(profile.labRawText || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const analysis = profile.labAnalysis;
 
   async function analyze() {
     if (!text.trim()) return;
@@ -114,6 +175,40 @@ export default function LabModule({ profile, onProfileUpdate }: Props) {
         </div>
         {error && <p style={{ color: COLORS.danger, fontSize: 13, margin: 0 }}>{error}</p>}
       </div>
+
+      {analysis && (
+        <>
+          {/* Summary Card */}
+          <div style={{
+            background: COLORS.surface,
+            border: `1px solid ${COLORS.border}`,
+            borderLeft: `3px solid ${COLORS.accent}`,
+            borderRadius: 10,
+            padding: '16px 18px',
+          }}>
+            <p style={{ margin: '0 0 6px', fontSize: 11, color: COLORS.accent, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 600 }}>
+              Summary
+            </p>
+            <p style={{ margin: 0, color: COLORS.text, fontSize: 14, lineHeight: 1.8 }}>
+              {analysis.summary}
+            </p>
+          </div>
+
+          {/* Value Cards Grid */}
+          <div>
+            <p style={{ margin: '0 0 12px', fontSize: 11, color: COLORS.textMuted, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 600 }}>
+              {analysis.values.length} Values Analyzed
+            </p>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+              gap: 12,
+            }}>
+              {analysis.values.map((v, i) => <ValueCard key={i} v={v} />)}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
