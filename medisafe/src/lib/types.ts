@@ -38,9 +38,11 @@ export interface MedAnalysis {
   summary: string;
   medications: {
     name: string;
-    status: 'safe' | 'caution' | 'interaction';
+    dose: string;
+    frequency: string;
+    status: 'recommended' | 'optional' | 'lifestyle';
+    reason: string;
     warning: string;
-    explanation: string;
   }[];
   doctorQuestions: string[];
   lifestyleTips: string[];
