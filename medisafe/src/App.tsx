@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import ContextBanner from './components/ContextBanner';
 import LabModule from './components/LabModule';
+import MedsModule from './components/MedsModule';
 import { COLORS, FONTS } from './lib/constants';
 import type { HealthProfile } from './lib/types';
 
@@ -9,6 +10,7 @@ const INITIAL_PROFILE: HealthProfile = {
   labRawText: '',
   labAnalysis: null,
   medications: [],
+  medAnalysis: null,
   lastUpdated: null,
 };
 
@@ -24,6 +26,8 @@ export default function App() {
     switch (active) {
       case 'lab':
         return <LabModule profile={profile} onProfileUpdate={updateProfile} />;
+      case 'meds':
+        return <MedsModule profile={profile} onProfileUpdate={updateProfile} />;
       default:
         return (
           <p style={{ color: COLORS.textMuted, fontSize: 15 }}>Coming soon.</p>

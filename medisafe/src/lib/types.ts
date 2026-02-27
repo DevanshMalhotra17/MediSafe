@@ -3,6 +3,7 @@ export interface HealthProfile {
   labRawText: string;
   labAnalysis: LabAnalysis | null;
   medications: Medication[];
+  medAnalysis: MedAnalysis | null;
   lastUpdated: string | null;
 }
 
@@ -33,6 +34,18 @@ export interface Medication {
   interactions?: string[];
 }
 
+export interface MedAnalysis {
+  summary: string;
+  medications: {
+    name: string;
+    status: 'safe' | 'caution' | 'interaction';
+    warning: string;
+    explanation: string;
+  }[];
+  doctorQuestions: string[];
+  lifestyleTips: string[];
+}
+
 // Meal
 export interface MealAnalysis {
   headline: string;
@@ -57,14 +70,6 @@ export interface WorkoutPlan {
   headline: string;
   rationale: string;
   exercises: Exercise[];
-}
-
-// Privacy
-export interface PrivacyAnalysis {
-  score: number;
-  hash: string;
-  factors: { label: string; risk: 'low' | 'medium' | 'high'; detail: string }[];
-  brokerWarnings: string[];
 }
 
 // Chat

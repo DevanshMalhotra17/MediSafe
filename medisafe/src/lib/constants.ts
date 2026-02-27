@@ -21,7 +21,6 @@ export const FONTS = {
 
 export const NAV_ITEMS = [
   { id: 'lab', label: 'Lab Results', icon: '🩸', pillar: 'bio' },
-  { id: 'privacy', label: 'Privacy', icon: '🔐', pillar: 'cyber' },
   { id: 'meds', label: 'Medications', icon: '💊', pillar: 'bio' },
   { id: 'meal', label: 'Meal Analyzer', icon: '🍽️', pillar: 'bio' },
   { id: 'fitness', label: 'Fitness', icon: '🏃', pillar: 'bio' },
